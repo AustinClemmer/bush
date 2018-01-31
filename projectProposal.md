@@ -8,7 +8,7 @@
 
 The bush project seeks to satisfy my own need for a shell highly tailored to fit my personal use preferences.  
 
-	#### Essential Features
+#### Essential Features
 
  - The Shell must be able to read user input, interpret the input, and execute the user input.
 - Upon a user hitting the return key, the input must execute, and return a fresh prompt.  The backspace key must consume characters to the left of the cursor, and the delete key must consume characters to the right of the cursor.
@@ -16,7 +16,7 @@ The bush project seeks to satisfy my own need for a shell highly tailored to fit
 - I/O redirection in the form of the pipe '|' will allow for users to send things between commands, stdin and stdout can be redirected using the '<' and '>' characters, and stderr will be redirected with '/>'.
 - The shell will be able to handle unmatched system calls, and inform the user when errors arise from permission conflicts.
 
-####Want to have
+#### Want to have
 
 - Shell that is portable to all UNIX systems, achievable by careful design of system calls.
 - File globbing, and support for wildcard variables in the calls.
