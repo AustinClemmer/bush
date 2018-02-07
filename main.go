@@ -18,6 +18,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	printPrompt()
 
 	//set restore point and restore term at end of program
 	defer terminal.Restore()
@@ -42,15 +43,18 @@ func main() {
 			//handle command
 			if cmd == "exit" || cmd == "quit" || cmd == "bye" {
 				os.Exit(0)
+			} else if cmd == "" {
+				printPrompt()
 			} else {
 				err := cmd.HandleCmd()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%v\n", err)
 				}
+				printPrompt()
 			}
 			cmd = ""
 
-		case '\u007f':
+		case '\u007f', '\u0008':
 			if len(cmd) > 0 {
 				cmd = cmd[:len(cmd)-1]
 				fmt.Printf("\u0008 \u0008")
@@ -64,5 +68,13 @@ func main() {
 
 func (comm Command) HandleCmd() error {
 	cmd := exec.Command(string(comm))
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
 	return cmd.Run()
+}
+
+func printPrompt() {
+	fmt.Printf(">>> ")
 }
