@@ -1,10 +1,19 @@
 package main
 
-import "testing"
+import (
+    "testing"
+    "io/ioutil"
+    "fmt"
+)
 
 func TestPrintedOutput(t *testing.T) {
-	numberOne := 1
-	if numberOne == 0 {
-		t.Error("Dev needs more coffee")
-	}
+    term, _ := ioutil.TempFile("", "term")
+    stdin, _ := ioutil.TempFile("", "in")
+    stdout, _ := ioutil.TempFile("", "out")
+    stderr, _ := ioutil.TempFile("", "err")
+    fmt.Fprintln(stdin, "exit")
+    status := Process(term, stdin, stdout, stderr)
+    if status != 0 {
+        t.Error("Failed to exit cleanly")
+    }
 }

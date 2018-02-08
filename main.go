@@ -1,6 +1,7 @@
 package main
 
 import (
+        "io"
 	"bufio"
 	"fmt"
 	"github.com/pkg/term"
@@ -18,12 +19,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	printPrompt()
+	printPrompt(os.Stdout)
 
 	//set restore point and restore term at end of program
 	defer terminal.Restore()
 	terminal.SetCbreak()
 
+	status := Process(terminal, os.Stdin, os.Stdout, os.Stderr)
+	if status != 0 {
+    		os.Exit(status)
+	}
+}
+
+func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 	//initialize buffer and reader
 	reader := bufio.NewReader(terminal)
 
@@ -35,32 +43,35 @@ func main() {
 	for {
 		character, _, err := reader.ReadRune()
 		if err != nil {
+    			if err == io.EOF {
+        			return 1
+    			}
 			panic(err)
 		}
 		switch character {
 		case '\n':
-			fmt.Printf("\n")
+			fmt.Fprintf(stdout, "\n")
 			//handle command
 			if cmd == "exit" || cmd == "quit" || cmd == "bye" {
-				os.Exit(0)
+				return 0
 			} else if cmd == "" {
-				printPrompt()
+				printPrompt(stdout)
 			} else {
 				err := cmd.HandleCmd()
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "%v\n", err)
+					fmt.Fprintf(stderr, "%v\n", err)
 				}
-				printPrompt()
+				printPrompt(stdout)
 			}
 			cmd = ""
 
 		case '\u007f', '\u0008':
 			if len(cmd) > 0 {
 				cmd = cmd[:len(cmd)-1]
-				fmt.Printf("\u0008 \u0008")
+				fmt.Fprintf(stdout, "\u0008 \u0008")
 			}
 		default:
-			fmt.Printf("%c", character)
+			fmt.Fprintf(stdout, "%c", character)
 			cmd += Command(character)
 		}
 	}
@@ -75,6 +86,6 @@ func (comm Command) HandleCmd() error {
 	return cmd.Run()
 }
 
-func printPrompt() {
-	fmt.Printf(">>> ")
+func printPrompt(stdout io.ReadWriteCloser) {
+	fmt.Fprintf(stdout, ">>> ")
 }
