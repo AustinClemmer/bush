@@ -1,12 +1,13 @@
 package main
 
 import (
-        "io"
 	"bufio"
 	"fmt"
 	"github.com/pkg/term"
+	"io"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 type Command string
@@ -27,7 +28,7 @@ func main() {
 
 	status := Process(terminal, os.Stdin, os.Stdout, os.Stderr)
 	if status != 0 {
-    		os.Exit(status)
+		os.Exit(status)
 	}
 }
 
@@ -43,9 +44,10 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 	for {
 		character, _, err := reader.ReadRune()
 		if err != nil {
-    			if err == io.EOF {
-        			return 1
-    			}
+			if err == io.EOF {
+				//EOF is no worries
+				return 0
+			}
 			panic(err)
 		}
 		switch character {
@@ -64,7 +66,11 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 				printPrompt(stdout)
 			}
 			cmd = ""
-
+		case '\u0004':
+			if len(cmd) == 0 {
+				//		os.Exit(0)
+				return 0
+			}
 		case '\u007f', '\u0008':
 			if len(cmd) > 0 {
 				cmd = cmd[:len(cmd)-1]
@@ -78,7 +84,31 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 }
 
 func (comm Command) HandleCmd() error {
-	cmd := exec.Command(string(comm))
+	parsed := strings.Fields(string(comm))
+	if len(parsed) == 0 {
+		printPrompt(os.Stdout)
+		return nil
+	}
+
+	var args []string
+	for _, val := range parsed[1:] {
+		if val[0] == '$' {
+			args = append(args, os.Getenv(val[1:]))
+		} else {
+			args = append(args, val)
+		}
+	}
+	if parsed[0] == "cd" {
+		if len(args) == 0 {
+			return os.Chdir("/home")
+		}
+		return os.Chdir(args[0])
+	}
+	if parsed[0] == "ls" {
+		args = append(args, "--color")
+	}
+
+	cmd := exec.Command(parsed[0], args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
