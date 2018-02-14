@@ -76,6 +76,8 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 				cmd = cmd[:len(cmd)-1]
 				fmt.Fprintf(stdout, "\u0008 \u0008")
 			}
+		case '\u001B': //don't wanna do this
+			continue
 		default:
 			fmt.Fprintf(stdout, "%c", character)
 			cmd += Command(character)
@@ -100,7 +102,7 @@ func (comm Command) HandleCmd() error {
 	}
 	if parsed[0] == "cd" {
 		if len(args) == 0 {
-			return os.Chdir("/home")
+			return os.Chdir("/home") //want to expand $HOME instead of naive
 		}
 		return os.Chdir(args[0])
 	}
