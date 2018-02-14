@@ -77,6 +77,8 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 				fmt.Fprintf(stdout, "\u0008 \u0008")
 			}
 		case '\u001B': //don't wanna do this
+		case '[':
+		case 'A', 'B', 'C', 'D':
 			continue
 		default:
 			fmt.Fprintf(stdout, "%c", character)
