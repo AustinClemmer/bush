@@ -8,14 +8,15 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
 type Command string
 
-func main() {
-	//fmt.Printf("bush >")
+const historyFile = ".bush_history"
 
+func main() {
 	//initialize terminal
 	terminal, err := term.Open("/dev/tty")
 	if err != nil {
@@ -56,6 +57,7 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 			fmt.Fprintf(stdout, "\n")
 			//handle command
 			if cmd == "exit" || cmd == "quit" || cmd == "bye" {
+				appendToHistory(stdout, historyFile, "+++ USER EXITED SHELL +++")
 				return 0
 			} else if cmd == "" {
 				printPrompt(stdout)
@@ -64,12 +66,12 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 				if err != nil {
 					fmt.Fprintf(stderr, "%v\n", err)
 				}
+				appendToHistory(stdout, historyFile, string(cmd))
 				printPrompt(stdout)
 			}
 			cmd = ""
 		case '\u0004':
 			if len(cmd) == 0 {
-				//		os.Exit(0)
 				return 0
 			}
 		case '\u007f', '\u0008':
@@ -87,6 +89,7 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 				}
 			}
 		case '\t':
+			//TODO tab completion function
 		default:
 			fmt.Fprintf(stdout, "%c", character)
 			cmd += Command(character)
@@ -115,8 +118,12 @@ func (comm Command) HandleCmd() error {
 		}
 		return os.Chdir(args[0])
 	}
-	if parsed[0] == "ls" {
-		args = append(args, "--color")
+	if parsed[0] == "ls" { // THIS IS NAIVE
+		if runtime.GOOS == "darwin" {
+			args = append(args, "-G")
+		} else {
+			args = append(args, "--color")
+		}
 	}
 
 	cmd := exec.Command(parsed[0], args...)
@@ -130,4 +137,21 @@ func (comm Command) HandleCmd() error {
 func printPrompt(stdout io.ReadWriteCloser) {
 	directory, _ := os.Getwd()
 	fmt.Fprintf(stdout, "%s >>> ", color.GreenString(directory))
+}
+
+func appendToHistory(stdout io.ReadWriteCloser, path string, text string) error {
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if os.IsNotExist(err) {
+		os.Create(historyFile)
+	}
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.WriteString(text + "\n")
+	if err != nil {
+		return err
+	}
+	return nil
 }
