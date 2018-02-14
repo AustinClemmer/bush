@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/pkg/term"
 	"io"
 	"os"
@@ -128,5 +129,5 @@ func (comm Command) HandleCmd() error {
 
 func printPrompt(stdout io.ReadWriteCloser) {
 	directory, _ := os.Getwd()
-	fmt.Fprintf(stdout, directory+" >>> ")
+	fmt.Fprintf(stdout, "%s >>> ", color.GreenString(directory))
 }
