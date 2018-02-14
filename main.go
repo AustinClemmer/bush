@@ -14,7 +14,7 @@ import (
 
 type Command string
 
-const historyFile = ".bush_history"
+var historyFile = os.Getenv("HOME") + "/.bush_history"
 
 func main() {
 	//initialize terminal
