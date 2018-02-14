@@ -85,6 +85,7 @@ func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
 					break
 				}
 			}
+		case '\t':
 		default:
 			fmt.Fprintf(stdout, "%c", character)
 			cmd += Command(character)
@@ -109,7 +110,7 @@ func (comm Command) HandleCmd() error {
 	}
 	if parsed[0] == "cd" {
 		if len(args) == 0 {
-			return os.Chdir("/home") //want to expand $HOME instead of naive
+			return os.Chdir(os.Getenv("HOME"))
 		}
 		return os.Chdir(args[0])
 	}
@@ -126,5 +127,6 @@ func (comm Command) HandleCmd() error {
 }
 
 func printPrompt(stdout io.ReadWriteCloser) {
-	fmt.Fprintf(stdout, ">>> ")
+	directory, _ := os.Getwd()
+	fmt.Fprintf(stdout, directory+" >>> ")
 }
