@@ -26,5 +26,9 @@
   version = "0.0.9"
 
 [[constraint]]
-  name = "github.com/mattn/go-isatty"
-  version = "0.0.3"
+  branch = "master"
+  name = "github.com/mattn/go-tty"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/pkg/term"

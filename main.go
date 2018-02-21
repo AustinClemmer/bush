@@ -1,107 +1,30 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/pkg/term"
-	"io"
+	"github.com/c-bata/go-prompt"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
 )
 
-type Command string
-
-var historyFile = os.Getenv("HOME") + "/.bush_history"
-
-func main() {
-	//initialize terminal
-	terminal, err := term.Open("/dev/tty")
-	if err != nil {
-		panic(err)
+func completer(d prompt.Document) []prompt.Suggest {
+	s := []prompt.Suggest{
+		{Text: "cd", Description: "change the directory"},
+		{Text: "ls", Description: "list the contents of current directory"},
 	}
-	printPrompt(os.Stdout)
-
-	//set restore point and restore term at end of program
-	defer terminal.Restore()
-	terminal.SetCbreak()
-
-	status := Process(terminal, os.Stdin, os.Stdout, os.Stderr)
-	if status != 0 {
-		os.Exit(status)
-	}
+	return prompt.FilterHasPrefix(s, d.GetWordBeforeCursor(), true)
 }
 
-func Process(terminal, stdin, stdout, stderr io.ReadWriteCloser) int {
-	//initialize buffer and reader
-	reader := bufio.NewReader(terminal)
-
-	//string command variable (global)
-	var cmd Command
-
-	//read in the characters/ build the command string
-	//panic if errors
-	for {
-		character, _, err := reader.ReadRune()
-		if err != nil {
-			if err == io.EOF {
-				//EOF is no worries
-				return 0
-			}
-			panic(err)
-		}
-		switch character {
-		case '\n':
-			fmt.Fprintf(stdout, "\n")
-			//handle command
-			if cmd == "exit" || cmd == "quit" || cmd == "bye" {
-				appendToHistory(stdout, historyFile, "+++ USER EXITED SHELL +++")
-				return 0
-			} else if cmd == "" {
-				printPrompt(stdout)
-			} else {
-				err := cmd.HandleCmd()
-				if err != nil {
-					fmt.Fprintf(stderr, "%v\n", err)
-				}
-				appendToHistory(stdout, historyFile, string(cmd))
-				printPrompt(stdout)
-			}
-			cmd = ""
-		case '\u0004':
-			if len(cmd) == 0 {
-				return 0
-			}
-		case '\u007f', '\u0008':
-			if len(cmd) > 0 {
-				cmd = cmd[:len(cmd)-1]
-				fmt.Fprintf(stdout, "\u0008 \u0008")
-			}
-		case '\u001B': //don't wanna do this
-			character, _, err = reader.ReadRune()
-			if character == '[' {
-				character, _, err = reader.ReadRune()
-				if character == 'A' || character == 'B' ||
-					character == 'C' || character == 'D' {
-					break
-				}
-			}
-		case '\t':
-			//TODO tab completion function
-		default:
-			fmt.Fprintf(stdout, "%c", character)
-			cmd += Command(character)
-		}
-	}
-}
-
-func (comm Command) HandleCmd() error {
-	parsed := strings.Fields(string(comm))
+func executor(s string) {
+	parsed := strings.Fields(s)
 	if len(parsed) == 0 {
-		printPrompt(os.Stdout)
-		return nil
+		return
+	} else if parsed[0] == "quit" || parsed[0] == "exit" {
+		fmt.Println("Bye!")
+		os.Exit(0)
+		return
 	}
 
 	var args []string
@@ -114,9 +37,11 @@ func (comm Command) HandleCmd() error {
 	}
 	if parsed[0] == "cd" {
 		if len(args) == 0 {
-			return os.Chdir(os.Getenv("HOME"))
+			os.Chdir(os.Getenv("HOME"))
+			return
 		}
-		return os.Chdir(args[0])
+		os.Chdir(args[0])
+		return
 	}
 	if parsed[0] == "ls" { // THIS IS NAIVE
 		if runtime.GOOS == "darwin" {
@@ -130,28 +55,14 @@ func (comm Command) HandleCmd() error {
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-
-	return cmd.Run()
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("Got error: %s\n", err.Error())
+	}
+	return
 }
 
-func printPrompt(stdout io.ReadWriteCloser) {
-	directory, _ := os.Getwd()
-	fmt.Fprintf(stdout, "%s >>> ", color.GreenString(directory))
-}
-
-func appendToHistory(stdout io.ReadWriteCloser, path string, text string) error {
-	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if os.IsNotExist(err) {
-		os.Create(historyFile)
-	}
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	_, err = f.WriteString(text + "\n")
-	if err != nil {
-		return err
-	}
-	return nil
+func main() {
+	fmt.Println("Welcome to bush- the belly up shell")
+	t := prompt.New(executor, completer, prompt.OptionPrefix(">>> "))
+	t.Run()
 }

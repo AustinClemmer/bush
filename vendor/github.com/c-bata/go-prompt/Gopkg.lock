@@ -15,6 +15,18 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/mattn/go-tty"
+  packages = ["."]
+  revision = "c1750293025292316a611ae8f632d9791515e51c"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/pkg/term"
+  packages = ["termios"]
+  revision = "b1f72af2d63057363398bec5873d16a98b453312"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "37707fdb30a5b38865cfb95e5aab41707daec7fd"
@@ -22,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e8a50671c3cb93ea935bf210b1cd20702876b9d9226129be581ef646d1565cdc"
+  inputs-digest = "6c442f55617e93df75aa1ee2fd2b36cfab23003fded4723be56c6b6fd0545c56"
   solver-name = "gps-cdcl"
   solver-version = 1

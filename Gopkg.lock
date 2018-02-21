@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  name = "github.com/fatih/color"
+  name = "github.com/c-bata/go-prompt"
   packages = ["."]
-  revision = "507f6050b8568533fb3f5504de8e5205fa62a114"
-  version = "v1.6.0"
+  revision = "e99fbc797b795e0a7a94affc8d44f6a0350d85f0"
+  version = "v0.2.1"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -21,11 +21,14 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/mattn/go-tty"
+  packages = ["."]
+  revision = "931426f7535ac39720c8909d70ece5a41a2502a6"
+
+[[projects]]
+  branch = "master"
   name = "github.com/pkg/term"
-  packages = [
-    ".",
-    "termios"
-  ]
+  packages = ["termios"]
   revision = "b1f72af2d63057363398bec5873d16a98b453312"
 
 [[projects]]
@@ -37,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "efe093fb4dae6b8ede22428b86adc76af46427df9f359e66ba764fc54363a4da"
+  inputs-digest = "8c22472690bbf5308bb29fdece3cf33771d2e1a93382df3ae617143e8ed80379"
   solver-name = "gps-cdcl"
   solver-version = 1
