@@ -10,10 +10,7 @@ import (
 )
 
 func completer(d prompt.Document) []prompt.Suggest {
-	s := []prompt.Suggest{
-		{Text: "cd", Description: "change the directory"},
-		{Text: "ls", Description: "list the contents of current directory"},
-	}
+	s := []prompt.Suggest{}
 	return prompt.FilterHasPrefix(s, d.GetWordBeforeCursor(), true)
 }
 
@@ -39,9 +36,14 @@ func executor(s string) {
 		if len(args) == 0 {
 			os.Chdir(os.Getenv("HOME"))
 			return
+		} else {
+			cdError := os.Chdir(args[0])
+			if cdError != nil {
+				fmt.Fprintf(os.Stdout, "Failed to successfully use cd")
+				return
+			}
+			return
 		}
-		os.Chdir(args[0])
-		return
 	}
 	if parsed[0] == "ls" { // THIS IS NAIVE
 		if runtime.GOOS == "darwin" {
