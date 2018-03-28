@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/c-bata/go-prompt"
+	"github.com/chzyer/readline"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
 
-func completer(d prompt.Document) []prompt.Suggest {
-	s := []prompt.Suggest{}
-	return prompt.FilterHasPrefix(s, d.GetWordBeforeCursor(), true)
-}
+var (
+	HistoryFile = filepath.Join(os.TempDir(), ".bush_history")
+)
 
 func executor(s string) {
 	parsed := strings.Fields(s)
@@ -32,6 +32,7 @@ func executor(s string) {
 			args = append(args, val)
 		}
 	}
+	//TODO: WHEN TRYING TO CD DIR WHERE DIR DOESN'T EXIST RETURNS NEW PROMPT, WANT ERROR
 	if parsed[0] == "cd" {
 		if len(args) == 0 {
 			os.Chdir(os.Getenv("HOME"))
@@ -65,6 +66,24 @@ func executor(s string) {
 
 func main() {
 	fmt.Println("Welcome to bush- the belly up shell")
-	t := prompt.New(executor, completer, prompt.OptionPrefix(">>> "))
-	t.Run()
+	rl, err := readline.New(">>> ")
+	errorCheck(err)
+	defer rl.Close()
+	readline.SetHistoryPath(HistoryFile)
+	for {
+		line, err := rl.Readline()
+		errorCheck(err)
+		executor(line)
+		if f, err := os.Open(HistoryFile); err == nil {
+			readline.AddHistory(line)
+			f.Close()
+		}
+	}
+
+}
+
+func errorCheck(the error) {
+	if the != nil {
+		panic(the)
+	}
 }
