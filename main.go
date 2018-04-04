@@ -11,10 +11,11 @@ import (
 )
 
 var (
-	HistoryFile = filepath.Join(os.TempDir(), ".bush_history")
+	HistoryFile = filepath.Join(os.Getenv("HOME"), ".bush_history")
 )
 
-func executor(s string) {
+func executor(s string) (e error) {
+	e = nil
 	parsed := strings.Fields(s)
 	if len(parsed) == 0 {
 		return
@@ -32,21 +33,21 @@ func executor(s string) {
 			args = append(args, val)
 		}
 	}
-	//TODO: WHEN TRYING TO CD DIR WHERE DIR DOESN'T EXIST RETURNS NEW PROMPT, WANT ERROR
 	if parsed[0] == "cd" {
 		if len(args) == 0 {
 			os.Chdir(os.Getenv("HOME"))
 			return
 		} else {
-			cdError := os.Chdir(args[0])
-			if cdError != nil {
-				fmt.Fprintf(os.Stdout, "Failed to successfully use cd")
+			if _, cdError := os.Stat(args[0]); cdError == nil {
+				os.Chdir(args[0])
+			} else {
+				e = fmt.Errorf("CD: No such directory exists")
 				return
 			}
 			return
 		}
 	}
-	if parsed[0] == "ls" { // THIS IS NAIVE
+	if parsed[0] == "ls" {
 		if runtime.GOOS == "darwin" {
 			args = append(args, "-G")
 		} else {
@@ -59,7 +60,7 @@ func executor(s string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		fmt.Printf("Got error: %s\n", err.Error())
+		fmt.Printf("%s\n", err.Error())
 	}
 	return
 }
@@ -73,7 +74,10 @@ func main() {
 	for {
 		line, err := rl.Readline()
 		errorCheck(err)
-		executor(line)
+		err = executor(line)
+		if err != nil {
+			fmt.Fprintln(rl, err)
+		}
 		if f, err := os.Open(HistoryFile); err == nil {
 			readline.AddHistory(line)
 			f.Close()
