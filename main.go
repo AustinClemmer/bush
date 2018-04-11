@@ -17,6 +17,23 @@ var (
 
 func executor(s string) (e error) {
 	e = nil
+	if last := s[len(s)-1:]; last == "&" {
+		s = strings.TrimSuffix(s, "&")
+		parsed := strings.Fields(s)
+		var args []string
+		for _, val := range parsed[1:] {
+			if val[0] == '$' {
+				args = append(args, os.Getenv(val[1:]))
+			} else {
+				args = append(args, val)
+			}
+		}
+		cmd := exec.Command(parsed[0], args...)
+		err := cmd.Start()
+		errorCheck(err)
+		//cmd.Wait() this will force the shell to wait until bg job is done
+		return
+	}
 	parsed := strings.Fields(s)
 	if len(parsed) == 0 {
 		return
@@ -56,16 +73,19 @@ func executor(s string) (e error) {
 		}
 	}
 	if parsed[0] == "jobs" {
-		fmt.Fprintln(rl, "job list")
+		fmt.Fprintln(rl, "NAME\t", "PID\t")
+		fmt.Fprintln(rl, os.Args[0], "\t", os.Getpid())
 		return
 	}
 	cmd := exec.Command(parsed[0], args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		fmt.Printf("%s\n", err.Error())
-	}
+	err := cmd.Run()
+	//	if err != nil {
+	//		fmt.Printf("%s\n", err.Error())
+	//	}
+	errorCheck(err)
 	return
 }
 
@@ -78,9 +98,7 @@ func main() {
 		line, err := rl.Readline()
 		errorCheck(err)
 		err = executor(line)
-		if err != nil {
-			fmt.Fprintln(rl, err)
-		}
+		errorCheck(err)
 		if f, err := os.Open(HistoryFile); err == nil {
 			readline.AddHistory(line)
 			f.Close()
@@ -91,6 +109,6 @@ func main() {
 
 func errorCheck(the error) {
 	if the != nil {
-		panic(the)
+		fmt.Fprintln(rl, the)
 	}
 }
