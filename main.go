@@ -12,6 +12,7 @@ import (
 
 var (
 	HistoryFile = filepath.Join(os.Getenv("HOME"), ".bush_history")
+	rl, err     = readline.New(">>> ")
 )
 
 func executor(s string) (e error) {
@@ -54,7 +55,10 @@ func executor(s string) (e error) {
 			args = append(args, "--color")
 		}
 	}
-
+	if parsed[0] == "jobs" {
+		fmt.Fprintln(rl, "job list")
+		return
+	}
 	cmd := exec.Command(parsed[0], args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -67,7 +71,6 @@ func executor(s string) (e error) {
 
 func main() {
 	fmt.Println("Welcome to bush- the belly up shell")
-	rl, err := readline.New(">>> ")
 	errorCheck(err)
 	defer rl.Close()
 	readline.SetHistoryPath(HistoryFile)
