@@ -15,6 +15,11 @@ var (
 	rl, err     = readline.New(">>> ")
 )
 
+//
+//TODO reap zombies!
+//TODO get bg/fg working
+//TODO modularize modularize modularize
+//
 func executor(s string) (e error) {
 	e = nil
 	if last := s[len(s)-1:]; last == "&" {
