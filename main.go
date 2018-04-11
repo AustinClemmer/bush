@@ -82,16 +82,12 @@ func executor(s string) (e error) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
-	//	if err != nil {
-	//		fmt.Printf("%s\n", err.Error())
-	//	}
 	errorCheck(err)
 	return
 }
 
 func main() {
 	fmt.Println("Welcome to bush- the belly up shell")
-	errorCheck(err)
 	defer rl.Close()
 	readline.SetHistoryPath(HistoryFile)
 	for {
