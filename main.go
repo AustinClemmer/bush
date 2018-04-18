@@ -15,17 +15,22 @@ var (
 	rl, err     = readline.New(">>> ")
 )
 
-//
-//TODO reap zombies!
-//TODO get bg/fg working
-//TODO modularize modularize modularize
-//
 func executor(s string) (e error) {
 	e = nil
+	var args []string
+	parsed := strings.Fields(s)
+	if len(parsed) == 0 {
+		return
+	}
+	for _, val := range parsed[1:] {
+		if val[0] == '$' {
+			args = append(args, os.Getenv(val[1:]))
+		} else {
+			args = append(args, val)
+		}
+	}
 	if last := s[len(s)-1:]; last == "&" {
 		s = strings.TrimSuffix(s, "&")
-		parsed := strings.Fields(s)
-		var args []string
 		for _, val := range parsed[1:] {
 			if val[0] == '$' {
 				args = append(args, os.Getenv(val[1:]))
@@ -36,52 +41,21 @@ func executor(s string) (e error) {
 		cmd := exec.Command(parsed[0], args...)
 		err := cmd.Start()
 		errorCheck(err)
-		//cmd.Wait() this will force the shell to wait until bg job is done
 		return
 	}
-	parsed := strings.Fields(s)
-	if len(parsed) == 0 {
+	switch parsed[0] {
+	case "quit", "exit":
+		quitHandler()
+	case "cd":
+		e = directoryChangeHandler(args)
 		return
-	} else if parsed[0] == "quit" || parsed[0] == "exit" {
-		fmt.Println("Bye!")
-		os.Exit(0)
+	case "ls":
+		args = listHandler(args)
+	case "jobs":
+		jobHandler()
 		return
 	}
 
-	var args []string
-	for _, val := range parsed[1:] {
-		if val[0] == '$' {
-			args = append(args, os.Getenv(val[1:]))
-		} else {
-			args = append(args, val)
-		}
-	}
-	if parsed[0] == "cd" {
-		if len(args) == 0 {
-			os.Chdir(os.Getenv("HOME"))
-			return
-		} else {
-			if _, cdError := os.Stat(args[0]); cdError == nil {
-				os.Chdir(args[0])
-			} else {
-				e = fmt.Errorf("CD: No such directory exists")
-				return
-			}
-			return
-		}
-	}
-	if parsed[0] == "ls" {
-		if runtime.GOOS == "darwin" {
-			args = append(args, "-G")
-		} else {
-			args = append(args, "--color")
-		}
-	}
-	if parsed[0] == "jobs" {
-		fmt.Fprintln(rl, "NAME\t", "PID\t")
-		fmt.Fprintln(rl, os.Args[0], "\t", os.Getpid())
-		return
-	}
 	cmd := exec.Command(parsed[0], args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -92,7 +66,7 @@ func executor(s string) (e error) {
 }
 
 func main() {
-	fmt.Println("Welcome to bush- the belly up shell")
+	fmt.Println("Welcome to bush- the barely usable shell")
 	defer rl.Close()
 	readline.SetHistoryPath(HistoryFile)
 	for {
@@ -105,11 +79,45 @@ func main() {
 			f.Close()
 		}
 	}
-
 }
 
 func errorCheck(the error) {
 	if the != nil {
 		fmt.Fprintln(rl, the)
 	}
+}
+
+func quitHandler() {
+	fmt.Println("Bye!")
+	os.Exit(0)
+	return
+}
+
+func directoryChangeHandler(args []string) (e error) {
+	if len(args) == 0 {
+		os.Chdir(os.Getenv("HOME"))
+		return
+	} else {
+		if _, cdError := os.Stat(args[0]); cdError == nil {
+			os.Chdir(args[0])
+		} else {
+			e = fmt.Errorf("CD: No such directory exists")
+			return
+		}
+		return
+	}
+}
+
+func listHandler(args []string) []string {
+	if runtime.GOOS == "darwin" {
+		return append(args, "-G")
+	} else {
+		return append(args, "--color")
+	}
+}
+
+func jobHandler() {
+	fmt.Fprintln(rl, "NAME\t", "PID\t")
+	fmt.Fprintln(rl, os.Args[0], "\t", os.Getpid())
+	return
 }

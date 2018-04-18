@@ -1,22 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"testing"
 )
 
-func TestPrintedOutput(t *testing.T) {
-	term, _ := ioutil.TempFile("", "term")
-	stdin, _ := ioutil.TempFile("", "in")
-	stdout, _ := ioutil.TempFile("", "out")
-	stderr, _ := ioutil.TempFile("", "err")
+func TestPrintedOutputList(t *testing.T) {
+	status := executor("ls")
 
-	fmt.Fprintln(stdin, "exit")
+	if status != nil {
+		t.Error("Failed to exit cleanly")
+	}
+}
+func TestHome(t *testing.T) {
+	status := executor("cd")
 
-	status := Process(term, stdin, stdout, stderr)
-
-	if status != 0 {
+	if status != nil {
 		t.Error("Failed to exit cleanly")
 	}
 }
