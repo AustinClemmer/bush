@@ -12,6 +12,7 @@ func TestPrintedOutputList(t *testing.T) {
 		t.Error("Failed to exit cleanly")
 	}
 }
+
 func TestHome(t *testing.T) {
 	status := executor("cd")
 	hd := os.Getenv("HOME")
@@ -22,5 +23,13 @@ func TestHome(t *testing.T) {
 	}
 	if hd != wd {
 		t.Error("Directories mismatched, failed to return home")
+	}
+}
+
+func TestDirectoryNotExist(t *testing.T) {
+	status := executor("cd bogusLongNameDirectory")
+
+	if status != nil {
+		t.Log("intentional failure, error caught")
 	}
 }
