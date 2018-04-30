@@ -9,7 +9,7 @@ func TestPrintedOutputList(t *testing.T) {
 	status := executor("ls")
 
 	if status != nil {
-		t.Error("Failed to exit cleanly")
+		t.Error("LS failed to cleanly exit")
 	}
 }
 
@@ -31,5 +31,13 @@ func TestDirectoryNotExist(t *testing.T) {
 
 	if status != nil {
 		t.Log("intentional failure, error caught")
+	}
+}
+
+func TestExitChecker(t *testing.T) {
+	statusExit := executor("exit")
+
+	if statusExit != nil {
+		t.Error("exit not clean")
 	}
 }

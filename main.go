@@ -44,7 +44,7 @@ func executor(s string) (e error) {
 		return
 	}
 	switch parsed[0] {
-	case "quit", "exit":
+	case "exit":
 		quitHandler()
 	case "cd":
 		e = directoryChangeHandler(args)
