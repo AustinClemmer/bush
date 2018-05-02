@@ -15,6 +15,22 @@ var (
 	rl, err     = readline.New(">>> ")
 )
 
+func main() {
+	fmt.Println("Welcome to bush- the barely usable shell")
+	defer rl.Close()
+	readline.SetHistoryPath(HistoryFile)
+	for {
+		line, err := rl.Readline()
+		errorCheck(err)
+		err = executor(line)
+		errorCheck(err)
+		if f, err := os.Open(HistoryFile); err == nil {
+			readline.AddHistory(line)
+			f.Close()
+		}
+	}
+}
+
 func executor(s string) (e error) {
 	e = nil
 	var args []string
@@ -62,22 +78,6 @@ func executor(s string) (e error) {
 	err := cmd.Run()
 	errorCheck(err)
 	return
-}
-
-func main() {
-	fmt.Println("Welcome to bush- the barely usable shell")
-	defer rl.Close()
-	readline.SetHistoryPath(HistoryFile)
-	for {
-		line, err := rl.Readline()
-		errorCheck(err)
-		err = executor(line)
-		errorCheck(err)
-		if f, err := os.Open(HistoryFile); err == nil {
-			readline.AddHistory(line)
-			f.Close()
-		}
-	}
 }
 
 func errorCheck(the error) {
