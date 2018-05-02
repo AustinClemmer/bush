@@ -1,18 +1,18 @@
 # <u>Bush- The Belly-Up Shell</u>
 
-## A project by Austin Clemmer- May 2, 2018
+#A project by Austin Clemmer- May 2, 2018
 
-### Abstract
+##Abstract
 
 The aim of this project was to create a shell that I would enjoy to use because of some key features I felt were lacking from the shell I'd previously been using for some time.  The bush shell was going to be a simple take on a shell with a lot of the same features covered with the shell written in Systems II lab.  The shell must be able to read what the users keyed into the command line. Upon the pressing of the return key (Enter key), interpret the input to the point where it would either execute the correctly formatted command entered by the user, or return an error with a status message indicating to the user that something was not right, and give them a nod to the type of error encountered with an exit status number.  The shell should also allow for in-line editing on the individual command line level, including the use of the backspace and delete keys to remove characters, and proper handling of the left and right arrow input keys to move a cursor around the line.  Initially job control was going to mimic that of the previous shell written during the Systems II class, but being something that was barely used by me, it got tossed to the wayside during development.  In the end the project turned out to be a very bare bones implementation of the shell, one without traditional job control (foregrounding/backgrounding), or IO redirection, but one that could be used to do everything necessary for a shell to do.  
 
 Keywords: #TODO
 
-### Table of Contents and Lists of Figures and Tables
+##Table of Contents and Lists of Figures and Tables
 
-# TODO
+####TODO
 
-### Introduction and Project overview
+##Introduction and Project overview
 
 A shell is a user interface which allows the user access to the operating system's services.  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  The term terminal comes to be known from the early days of computing, when a physical hardware device would be necessary for the input of data, and the displaying of the data.  This screen and keyboard setup was known as the terminal. This afforded the user something to input information (keyboard/number pad), and showed the user everything they needed to know about what they were doing with the specific system (on-screen display of information).  One popular example of the early terminals is something known as a teletype.  These devices were similar to modern day computer screens in that they were used to display information inputs and outputs from humans and the computations the computing system completed for the user; however, these terminals predated the computer monitor currently known by decades.  The teletype provided a keyboard as the user interface to work with early mainframe computers. They employed punched tape and punched cards to bridge the gap from human to early computer.  These cards or tapes could be used for data storage or represent the data itself. The machines would then display the output, or return something to the user (from a remote source of data or human input). 
 
@@ -20,5 +20,29 @@ The term terminal has since then been abstracted to mainly refer to terminal emu
 
 There is a lot of confusion surrounding the correct nomenclature for what the terminal is and what a shell is.  A user will interact with the terminal emulator in order to use the shell to propagate messages and commands to the operating systems kernel leading to the execution and manipulation of operating system services to complete tasks necessary for the user. The terminal emulator is a program that provides an emulated terminal for displaying and accepting information in the form of user input, the shell is the program that checks to see what the user has entered and pass it along to the kernel in order to complete some activity.  The two terms terminal and shell are often conflated because they are hard to separate conceptually.  The shell simply runs in the terminal.  The problem with most shells is over complication of what is a seemingly simple program.  
 
-The legacy problem is rampant in shell programs.  The legacy problem can be defined as "the way it has been done, it will continue to be done".  The most prevalent shells in today's modern computing world are the same shells that have been around, and in use, for two to three decades.  This project seeks to condense some of the shell programs that are still in use, by only including useful features, or features the developer thought were necessary in a shell.  The intended user base is anyone who uses a shell, is dissatisfied with bloat, or over-complication of simplistic actions in shell use.  
+The legacy problem is rampant in shell programs.  The legacy problem can be defined as "the way it has been done, it will continue to be done".  The most prevalent shells in today's modern computing world are the same shells that have been around, and in use, for two to three decades.  This project seeks to condense some of the shell programs that are still in use, by only including useful features, or features the developer thought were necessary in a shell.  
+
+The intended user base is anyone who uses a shell, is dissatisfied with bloat, or over-complication of simplistic actions in shell use.  The belly up shell has a no bloat user prompt that only displays a triple bracket leader (">>> ") for each refreshed command line.  It will notify you of any permission conflicts, and malformed commands with a returned error/exit status.  The use of 'sudo' will prompt for the users password, and then lead into the desired activities if permission conflicts are present.  The user can look back through the current session's history with the up arrow key in the order of most recently used to the first command entered during that session.  The built-in command 'jobs' will present the user with a list of the current processes through the use of the ps command.  Given the way the jobs feature was implemented it will accept all flags that the ps command accepts.  The command 'cd dir/' will help the user change directories, the default cd with no path will take the user to their home directory as specified at the operating system level.  To list the current contents of a directory, the command 'ls' will provide a color-coded output of the files and directories in the directory it is invoked.   #TODO: turn into bullets
+
+##Design, Development, and Testing
+
+###Design
+
+
+
+### Development
+
+
+
+### Testing
+
+##Results
+
+
+
+## Conclusions and Future Work
+
+## References
+
+[1] stuff
 
