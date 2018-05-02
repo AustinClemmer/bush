@@ -52,8 +52,7 @@ func executor(s string) (e error) {
 	case "ls":
 		args = listHandler(args)
 	case "jobs":
-		jobHandler()
-		return
+		parsed[0] = "ps"
 	}
 
 	cmd := exec.Command(parsed[0], args...)
@@ -114,10 +113,4 @@ func listHandler(args []string) []string {
 	} else {
 		return append(args, "--color")
 	}
-}
-
-func jobHandler() {
-	fmt.Fprintln(rl, "NAME\t", "PID\t")
-	fmt.Fprintln(rl, os.Args[0], "\t", os.Getpid())
-	return
 }
