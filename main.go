@@ -16,7 +16,7 @@ var (
 )
 
 func main() {
-	fmt.Println("Welcome to bush- the barely usable shell")
+	fmt.Println("Welcome to bush- the Belly Up SHell")
 	defer rl.Close()
 	readline.SetHistoryPath(HistoryFile)
 	for {
