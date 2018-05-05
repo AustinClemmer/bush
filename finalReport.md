@@ -1,18 +1,18 @@
 # <u>Bush- The Belly-Up Shell</u>
 
-#A project by Austin Clemmer- May 2, 2018
+# A project by Austin Clemmer- May 2, 2018
 
-##Abstract
+## Abstract
 
 The aim of this project was to create a shell that I would enjoy to use because of some key features I felt were lacking from the shell I'd previously been using for some time.  The bush shell was going to be a simple take on a shell with a lot of the same features covered with the shell written in Systems II lab.  The shell must be able to read what the users keyed into the command line. Upon the pressing of the return key (Enter key), interpret the input to the point where it would either execute the correctly formatted command entered by the user, or return an error with a status message indicating to the user that something was not right, and give them a nod to the type of error encountered with an exit status number.  The shell should also allow for in-line editing on the individual command line level, including the use of the backspace and delete keys to remove characters, and proper handling of the left and right arrow input keys to move a cursor around the line.  Initially job control was going to mimic that of the previous shell written during the Systems II class, but being something that was barely used by me, it got tossed to the wayside during development.  In the end the project turned out to be a very bare bones implementation of the shell, one without traditional job control (foregrounding/backgrounding), or IO redirection, but one that could be used to do everything necessary for a shell to do.  
 
 Keywords: bush, belly up shell, shell, golang, go
 
-##Table of Contents and Lists of Figures and Tables
+## Table of Contents and Lists of Figures and Tables
 
-####TODO: upon feedback/formatting suggestions
+#### TODO: upon feedback/formatting suggestions
 
-##Introduction and Project overview
+## Introduction and Project overview
 
 A shell is a user interface which allows the user access to the operating system's services.  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  The term terminal comes to be known from the early days of computing, when a physical hardware device would be necessary for the input of data, and the displaying of the data.  This screen and keyboard setup was known as the terminal. This afforded the user something to input information (keyboard/number pad), and showed the user everything they needed to know about what they were doing with the specific system (on-screen display of information).  One popular example of the early terminals is something known as a teletype.  These devices were similar to modern day computer screens in that they were used to display information inputs and outputs from humans and the computations the computing system completed for the user; however, these terminals predated the computer monitor currently known by decades.  The teletype provided a keyboard as the user interface to work with early mainframe computers. They employed punched tape and punched cards to bridge the gap from human to early computer.  These cards or tapes could be used for data storage or represent the data itself. The machines would then display the output, or return something to the user (from a remote source of data or human input). 
 
@@ -24,9 +24,9 @@ The legacy problem is rampant in shell programs.  The legacy problem can be defi
 
 The intended user base is anyone who uses a shell, is dissatisfied with bloat, or over-complication of simplistic actions in shell use.  The belly up shell has a no bloat user prompt that only displays a triple bracket leader (">>> ") for each refreshed command line.  It will notify you of any permission conflicts, and malformed commands with a returned error/exit status.  The use of 'sudo' will prompt for the users password, and then lead into the desired activities if permission conflicts are present.  The user can look back through the current session's history with the up arrow key in the order of most recently used to the first command entered during that session.  In addition to this history, a hidden history file will also be populated in the users home directory.  The built-in command 'jobs' will present the user with a list of the current processes through the use of the ps command.  Given the way the jobs feature was implemented it will accept all flags that the ps command accepts.  The command 'cd dir/' will help the user change directories, the default cd with no path will take the user to their home directory as specified at the operating system level.  To list the current contents of a directory, the command 'ls' will provide a color-coded output of the files and directories in the directory it is invoked.  To exit the shell the command 'exit' will kill the shell, and print a nice departure message to the user.  
 
-##Design, Development, and Testing
+## Design, Development, and Testing
 
-###Design
+### Design
 
 This project is written in the programming language Go.  Go was chosen for this project based on it's highly concurrent nature, and ability to interact at a system level with the kernel.  The choice to use Go was one that was taken rather lightly on a recommendation from a colleague.  This language turned out to be a great choice overall, and little in the way of similar projects could be found on-line.  
 
@@ -48,7 +48,7 @@ At this point, the shell was working, but the user experience was more annoying 
 
 Most initial testing came in the form of extensive use, and would be considered manual testing.  By the time the shell was working in the most rudimentary fashion, it was used as the shell for the developer to develop the shell.  The use of the Go 'testing' package was added into the program to make this process more accessible, and easier to automate.  When it came time to automate testing, the first thing that was tested was the display of the printed output to the terminal on stdout.  If a command is run, and the executor function returns an error, the test will display an appropriate message to the developer about what went wrong.  The next test that was implemented was for the built-in feature of 'cd'.  This feature is expected, when supplied with no path or directory name, to return the user to the home directory.  The command is executed, and the test looks at the user's home directory.  This directory is saved into a variable. Next, the current working directory is queried by the program, and saved into another variable.  If the values of the paths stored in these variables are not the same, the command did not return the user to the correct place, and it returns one of two errors to let the developer know what went wrong.  Another major issue with the 'cd' command was that it just returned a prompt to the user without notifying them that the directory change was a failure.  After the error checking was implemented successfully into the program, a test to make sure an error was happening was implemented.  This test invokes 'cd bogusLongNameDirectory' (in the hopes that the user hasn't added a directory named bogusLongNameDirectory), and returns a logged error message that an error was received as intended by the program.  The next test implemented checks to make sure the 'exit' command actually exits the shell cleanly without an error.  If an error occurs it is displayed to the developer.
 
-##Results
+## Results
 
 The initial goals of the project were lofty, and unrealistic.  Development of the project took a long time due to poor time management, and was over complicated by the use of the wrong tool set in the beginning.  Had the project used the correct Readline library functionality in the beginning, seemingly hard problems would have just vanished, or been reduced to purely trivial ones. An initial hurdle that was overcome stubbornly was the problem of working with a language that was new to me.   The time spent to learn the tools in the language was very small, and more of a stumble than that of a smooth walk through the new material.   Where I should have taken the time to learn piece by piece, I was trying to follow tutorials, and copy-paste things I thought would work.  The initial feature list was out of control, and I just didn't realize what actually needed to be done.  
 
