@@ -31,4 +31,5 @@ In terms of package management, the tool Dep has been included in this project, 
 
 ### Resources
 [Project Proposal](projectProposal.md)
+
 [Final Technical Report (draft)](finalReport.md)
