@@ -28,3 +28,7 @@ Quality control of this repository has been taken on with the use of the go 'go/
 implements the standard formatting of Go source code.
 
 In terms of package management, the tool Dep has been included in this project, to make managing dependencies trivial.
+
+### Resources
+[Project Proposal](projectProposal.md)
+[Final Technical Report (draft)](finalReport.md)
