@@ -2,6 +2,7 @@
 ## bush- Belly Up SHell
 
 - A capstone project by Austin Clemmer
+
 Bush is a very rudimentary implementation of a shell, written in the language Go.
 It has been written with all UNIX systems in mind. 
 
