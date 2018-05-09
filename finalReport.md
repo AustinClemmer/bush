@@ -1,4 +1,4 @@
-# <u>Bush- The Belly Up Shell</u>
+# <u>Bush- The Belly Up SHell</u>
 
 # A project by Austin Clemmer - May 8, 2018
 
@@ -25,6 +25,7 @@ Keywords: bush, belly up shell, shell, golang, go
 4. [Results](#results)
 5. [Conclusions and Future Work](#conclusions-and-future-work)
 6. [References](#references)
+7. [All packages/libraries used](#all-libraries/packages)
 
 ## Introduction and Project overview
 
