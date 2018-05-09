@@ -10,27 +10,20 @@ Keywords: bush, belly up shell, shell, golang, go
 
 ## Table of Contents
 
-1. [Abstract] {#abstract}
-
-2. [Introduction and Project overview] {#introduction-and-project-overview}
-
+1. [Abstract]{#abstract}
+2. [Introduction and Project overview]{#introduction-and-project-overview}
    - [Shells]{#shells}
    - [Terminals _then_]{#terminals-then}
    - [Terminals _now_]{#terminals-now}
    - [Designations]{#designations}
    - [The Legacy Problem]{#the-legacy-problem}
    - [The Belly Up SHell]{#the-belly-up-shell}
-
 3. [Design, Development, and Testing]{#design-development-and-testing}
-
    - [Design]{#design}
    - [Development]{#development}
    - [Testing]{#testing}
-
 4. [Results]{#results}
-
 5. [Conclusions and Future Work]{#conclusions-and-future-work}
-
 6. [References]{#references}
 
 ## Introduction and Project overview
