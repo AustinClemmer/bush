@@ -1,6 +1,6 @@
 # <u>Bush- The Belly Up Shell</u>
 
-# A project by Austin Clemmer- May 2, 2018
+# A project by Austin Clemmer - May 8, 2018
 
 ## Abstract
 
@@ -30,7 +30,7 @@ Keywords: bush, belly up shell, shell, golang, go
 
 ### Shells
 
-A shell is a user interface which allows the user access to the operating system's services.  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  
+A shell is a user interface which allows the user access to the operating system's services. [1]  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  
 
 ### Terminals _then_
 
@@ -109,5 +109,16 @@ I would love to continue to tweak this shell to be exactly what I am looking for
 
 ## References
 
-[1] Planning on adding references and working on formatting with the final submission.  All content is here in the present form, and should serve to allow you to provide the proper feedback for me continuing this document's refinement.
+[1] 
+
+## All libraries/packages
+
+- [Go format (gofmt)](https://golang.org/cmd/gofmt/)
+- [Dep](https://github.com/golang/dep)
+- [chyzer/readline](https://github.com/chzyer/readline)
+- [os](https://golang.org/pkg/os/)
+- [os/exec](https://golang.org/pkg/os/exec/)
+- [path/filepath](https://golang.org/pkg/path/filepath/)
+- [runtime](https://golang.org/pkg/runtime/)
+- [strings](https://golang.org/pkg/strings/)
 
