@@ -10,9 +10,9 @@ Keywords: bush, belly up shell, shell, golang, go
 
 ## Table of Contents
 
-1.  [Abstract]{#abstract}
+1. [Abstract] {#abstract}
 
-2.  [Introduction and Project overview]{#introduction-and-project-overview}
+2. [Introduction and Project overview] {#introduction-and-project-overview}
 
    - [Shells]{#shells}
    - [Terminals _then_]{#terminals-then}
