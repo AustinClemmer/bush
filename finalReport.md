@@ -117,7 +117,7 @@ I would love to continue to tweak this shell to be exactly what I am looking for
 - [<a id="emulator">6</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Emulator
 - [<a id="go">7</a>]  Retrieved May 8, 2018 from https://golang.org
 - [<a id="token">8</a>]  Retrieved May 8, 2018 from https://www.techopedia.com/definition/13698/tokenization
-- [<a id="stds">9</a>]  Retrieved May 8, 2018 fromhttps://en.wikipedia.org/wiki/Standard_streams
+- [<a id="stds">9</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Standard_streams
 
 
 
