@@ -115,6 +115,7 @@ I would love to continue to tweak this shell to be exactly what I am looking for
 
 - [Go format (gofmt)](https://golang.org/cmd/gofmt/)
 - [Dep](https://github.com/golang/dep)
+- [testing](https://golang.org/pkg/testing/)
 - [chyzer/readline](https://github.com/chzyer/readline)
 - [os](https://golang.org/pkg/os/)
 - [os/exec](https://golang.org/pkg/os/exec/)
