@@ -110,17 +110,17 @@ I would love to continue to tweak this shell to be exactly what I am looking for
 
 ## References
 
-- [<a id="shell">1</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Shell_(computing)
-- [<a id="kernel">2</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Kernel_(operating_system)
-- [<a id="terminal">3</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Computer_terminal
-- [<a id="teletype">4</a>]  Retrieved May 8, 2018 from http://www.linfo.org/teletype.html
-- [<a id="terminal-emulator">5</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Terminal_emulator
-- [<a id="emulator">6</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Emulator
-- [<a id="go">7</a>]  Retrieved May 8, 2018 from https://golang.org
-- [<a id="token">8</a>]  Retrieved May 8, 2018 from https://www.techopedia.com/definition/13698/tokenization
-- [<a id="stds">9</a>]  Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Standard_streams
-- [<a id="rune">10</a>] Retrieved May 8, 2018 from https://blog.golang.org/strings
-- [<a id="ps">11</a>] Retrieved May 8, 2018 from http://man7.org/linux/man-pages/man1/ps.1.html
+- [<a id="shell">1</a>]  Shell (computing). Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Shell_(computing)
+- [<a id="kernel">2</a>]  Kernel (operating system). Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Kernel_(operating_system)
+- [<a id="terminal">3</a>]  Computer terminal. Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Computer_terminal
+- [<a id="teletype">4</a>]  Teletypewriter Definition. Retrieved May 8, 2018 from http://www.linfo.org/teletype.html
+- [<a id="terminal-emulator">5</a>]  Terminal emulator. Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Terminal_emulator
+- [<a id="emulator">6</a>]  Emulator. Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Emulator
+- [<a id="go">7</a>]  The Go Programming Language. Retrieved May 8, 2018 from https://golang.org
+- [<a id="token">8</a>]  What is Tokenization? Retrieved May 8, 2018 from https://www.techopedia.com/definition/13698/tokenization
+- [<a id="stds">9</a>]  Standard Streams. Retrieved May 8, 2018 from https://en.wikipedia.org/wiki/Standard_streams
+- [<a id="rune">10</a>] Strings. Retrieved May 8, 2018 from https://blog.golang.org/strings
+- [<a id="ps">11</a>] ps(1) - Linux manual page. Retrieved May 8, 2018 from http://man7.org/linux/man-pages/man1/ps.1.html
 
 
 ## All libraries/packages
