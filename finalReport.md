@@ -25,7 +25,7 @@ Keywords: bush, belly up shell, shell, golang, go
 4. [Results](#results)
 5. [Conclusions and Future Work](#conclusions-and-future-work)
 6. [References](#references)
-7. [All packages/libraries used](#all-libraries/packages)
+7. [All packages/libraries used](#all-librariespackages)
 
 ## Introduction and Project overview
 
