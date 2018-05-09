@@ -30,7 +30,7 @@ Keywords: bush, belly up shell, shell, golang, go
 
 ### Shells
 
-A shell is a user interface which allows the user access to the operating system's services. [1]  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  
+A shell is a user interface which allows the user access to the operating system's services. [[1]](#shell)  The name shell comes from the abstract description that the kernel (the core program inside the operating system that has complete control over the CPU, all memory, and devices attached to the system) is 'wrapped' up by a shell, and the user interaction goes through this level, before directly affecting the system level components (CPU, memory, devices).  Generally, a user will interact with this program (the shell) via a command line terminal emulator.  
 
 ### Terminals _then_
 
@@ -109,7 +109,7 @@ I would love to continue to tweak this shell to be exactly what I am looking for
 
 ## References
 
-[1] 
+- [<a id="shell">1</a>]  Retrieved May 2, 2018 from https://en.wikipedia.org/wiki/Shell_(computing)
 
 ## All libraries/packages
 
