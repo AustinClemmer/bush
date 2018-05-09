@@ -1,18 +1,37 @@
-# <u>Bush- The Belly-Up Shell</u>
+# <u>Bush- The Belly Up Shell</u>
 
 # A project by Austin Clemmer- May 2, 2018
 
 ## Abstract
 
-The aim of this project was to create a shell that I would enjoy to use because of some key features I felt were lacking from the shell I'd previously been using for some time.  The bush shell was going to be a simple take on a shell with a lot of the same features covered with the shell written in Systems II lab.  The shell must be able to read what the users keyed into the command line. Upon the pressing of the return key (Enter key), interpret the input to the point where it would either execute the correctly formatted command entered by the user, or return an error with a status message indicating to the user that something was not right, and give them a nod to the type of error encountered with an exit status number.  The shell should also allow for in-line editing on the individual command line level, including the use of the backspace and delete keys to remove characters, and proper handling of the left and right arrow input keys to move a cursor around the line.  Initially job control was going to mimic that of the previous shell written during the Systems II class, but being something that was barely used by me, it got tossed to the wayside during development.  In the end the project turned out to be a very bare bones implementation of the shell, one without traditional job control (foregrounding/backgrounding), or IO redirection, but one that could be used to do everything necessary for a shell to do.  
+The aim of this project was to create a shell that I would enjoy to use because of some key features I felt were lacking from the shell I'd previously been using for some time.  Bush (the Belly Up SHell) was going to be a simple take on a shell with a lot of the same features covered with the shell written in Systems II lab.  The shell must be able to read what the users keyed into the command line. Upon the pressing of the return key (Enter key), interpret the input to the point where it would either execute the correctly formatted command entered by the user, or return an error with a status message indicating to the user that something was not right, and give them a nod to the type of error encountered with an exit status number.  The shell should also allow for in-line editing on the individual command line level, including the use of the backspace and delete keys to remove characters, and proper handling of the left and right arrow input keys to move a cursor around the line.  Initially job control was going to mimic that of the previous shell written during the Systems II class, but being something that was barely used by me, it got tossed to the wayside during development.  In the end the project turned out to be a very bare bones implementation of the shell, one without traditional job control (foregrounding/backgrounding), or IO redirection, but one that could be used to do everything necessary for a shell to do.  
 
 Keywords: bush, belly up shell, shell, golang, go
 
 ## Table of Contents
 
-#### TODO: the TOC
+1. [Abstract]{#abstract}
 
-#### TODO: explanation of stdin/out/err
+2. [Introduction and Project overview]{#introduction-and-project-overview}
+
+   - [Shells]{#shells}
+   - [Terminals _then_]{#terminals-then}
+   - [Terminals _now_]{#terminals-now}
+   - [Designations]{#designations}
+   - [The Legacy Problem]{#the-legacy-problem}
+   - [The Belly Up SHell]{#the-belly-up-shell}
+
+3. [Design, Development, and Testing]{#design-development-and-testing}
+
+   - [Design]{#design}
+   - [Development]{#development}
+   - [Testing]{#testing}
+
+4. [Results]{#results}
+
+5. [Conclusions and Future Work]{#conclusions-and-future-work}
+
+6. [References]{#references}
 
 ## Introduction and Project overview
 
@@ -48,7 +67,7 @@ This project is written in the programming language Go.  Go was chosen for this 
 
 When the user enters the program, they are met with a simple greeting message to welcome them to the Bush experience.  They are then presented with a simple prompt (">>> "), and can begin using the shell to navigate around in the computer, and perform whatever tasks are required during the session.  The user completes these actions by entering in commands to the command line and pressing the return key, this is where the magic happens.
 
-The library that extends the capability of the go language to digest user input, and display a new prompt, is known as "Readline".  Once the user strikes the return key, the string they entered into the command line gets initialized to an internal variable.  This variable is passed along to an executing function to be handled, and to ensure the correct message to reach the operating system.  This string is tokenized into the main command, and its flags/arguments.  Tokenization, in this context, refers to the process of classifying sections of the string.  An empty string will return the user a new prompt, and do nothing.  The main command and it's arguments are passed to a function in the library in the Go language package "OS" known as "exec".  The package exec runs external commands, remapping stdin and stdout, intentionally not invoking the system shell.  Specifically, the Command function in the "os/exec" package digests the command and arguments, and returns a command structure.  The shell internally maps the operating system level stdin, stdout, and stderr, to the command stdin, stdout, stderr.  The command is then ran, and error checking occurs to make sure everything was properly formatted, and that no errors occurred.  Each time a command is entered, the "Readline" library takes the raw string from the user, and appends it to a master history file.  If no such file exists, one will be made in the correct place, and the commands will begin to populate it.   The error handling is done with the error interface provided by the "runtime" Go package.  This package allows the developer to distinguish types that are runtime errors from ordinary errors.  After the successful completion of a command, the "Readline" library returns a new prompt to the user, and awaits another command.
+The library that extends the capability of the go language to digest user input, and display a new prompt, is known as "Readline".  Once the user strikes the return key, the string they entered into the command line gets initialized to an internal variable.  This variable is passed along to an executing function to be handled, and to ensure the correct message to reach the operating system.  This string is tokenized into the main command, and its flags/arguments.  Tokenization, in this context, refers to the process of classifying sections of the string.  An empty string will return the user a new prompt, and do nothing.  The main command and it's arguments are passed to a function in the library in the Go language package "OS" known as "exec".  The package exec runs external commands, remapping stdin and stdout, intentionally not invoking the system shell.  The standard streams, stdin, stdout, and stderr, are preconnected input and output communication channels.  [] Upon execution of a command with an interactive shell, these streams are connected to the terminal.  Stdin is the representation of the data stream into the program, stdout being the stream of data out of the program, and stderr being the stream which error messages come through.  Specifically, the Command function in the "os/exec" package digests the command and arguments, and returns a command structure.  The shell internally maps the operating system level stdin, stdout, and stderr, to the command stdin, stdout, stderr.  The command is then ran, and error checking occurs to make sure everything was properly formatted, and that no errors occurred.  Each time a command is entered, the "Readline" library takes the raw string from the user, and appends it to a master history file.  If no such file exists, one will be made in the correct place, and the commands will begin to populate it.   The error handling is done with the error interface provided by the "runtime" Go package.  This package allows the developer to distinguish types that are runtime errors from ordinary errors.  After the successful completion of a command, the "Readline" library returns a new prompt to the user, and awaits another command.
 
 ### Development
 
